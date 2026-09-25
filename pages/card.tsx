@@ -1,5 +1,4 @@
 import Image from "next/image"
-import React from "react"
 
 export const MOCK_DATA = [
   {
@@ -38,45 +37,67 @@ export const MOCK_DATA = [
   },
 ]
 
+function slugify(title: string) {
+  return title.toLowerCase().replace(/\s+/g, "-")
+}
+
 export default function Card() {
-  return MOCK_DATA.map((data) => {
-    return (
-      <div
-        key={data.id}
-        className="border border-gray-400 dark:border-white rounded shadow-md transition ease-in-out duration-500 hover:shadow-2xl"
-      >
-        <a href={data.linkPreview} target="_blank" rel="noopener noreferrer">
-          <Image
-            src={data.imgSrc}
-            alt={data.title}
-            width="500"
-            height="300"
-            className="w-full h-[200px] rounded transition ease-in-out duration-500 hover:opacity-80"
-          />
-        </a>
-        <div className="px-4 py-2">
-          <h1 className="text-2xl">{data.title}</h1>
-          <p className="text-slate-600 dark:text-slate-200 overflow-hidden text-ellipsis whitespace-nowrap">
-            {data.description}
-          </p>
+  return (
+    <>
+      {MOCK_DATA.map((data) => (
+        <article
+          key={data.id}
+          className="group overflow-hidden rounded-xl border border-white/70 bg-white/60 backdrop-blur-lg transition duration-300 hover:-translate-y-1 hover:border-emerald-400/60 hover:shadow-[0_20px_45px_-22px_rgba(16,185,129,0.65)] dark:border-white/10 dark:bg-white/[0.04]"
+        >
+          <div className="flex items-center gap-2 border-b border-slate-200/80 bg-white/40 px-3 py-2 dark:border-white/10 dark:bg-white/[0.03]">
+            <span aria-hidden className="flex gap-1">
+              <span className="h-2 w-2 rounded-full bg-rose-400/80" />
+              <span className="h-2 w-2 rounded-full bg-amber-400/80" />
+              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+            </span>
+            <span className="truncate text-[11px] text-slate-500 dark:text-slate-400">
+              ~/projects/{slugify(data.title)}
+            </span>
+          </div>
+
           <a
-            href={data.linkSource}
+            href={data.linkPreview}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center px-2 py-2 my-2 border border-gray-400 text-base font-medium rounded-md transition ease-in-out duration-150 hover:bg-teal-500 "
+            className="block overflow-hidden"
           >
             <Image
-              src="/github.svg"
-              width="25"
-              height={25}
-              alt="Github"
-              title="Github"
-              className="dark:invert"
+              src={data.imgSrc}
+              alt={data.title}
+              width={500}
+              height={300}
+              className="h-44 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
             />
-            <span className="ml-2 dark:text-white">Github</span>
           </a>
-        </div>
-      </div>
-    )
-  })
+
+          <div className="p-4">
+            <h3 className="text-base font-semibold">{data.title}</h3>
+            <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              {data.description}
+            </p>
+            <a
+              href={data.linkSource}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-300/80 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-700 dark:border-white/15 dark:text-slate-200 dark:hover:text-emerald-400"
+            >
+              <Image
+                src="/github.svg"
+                width={16}
+                height={16}
+                alt=""
+                className="opacity-70 dark:invert"
+              />
+              <span>Github</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </>
+  )
 }
